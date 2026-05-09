@@ -1,14 +1,19 @@
 "use client"
-export const dynamic = "force-dynamic"
+export const ssr = false
 
 import { useSearchParams, useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { supabase } from "@/lib/supabase"
 
 export default function InvestStartPage() {
+if (typeof window === "undefined") return null
   const router = useRouter()
-const searchParams = useSearchParams()
-
+let searchParams: any = null
+try {
+  searchParams = useSearchParams()
+} catch (e) {
+  searchParams = null
+}
 const [planName, setPlanName] = useState("")
 const [roi, setRoi] = useState("")
 const [days, setDays] = useState("")
