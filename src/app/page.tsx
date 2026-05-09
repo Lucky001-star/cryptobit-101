@@ -1,9 +1,11 @@
 "use client"
 import Link from "next/link"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Shield, Zap, BarChart3, UserPlus, Wallet, Star, TrendingUp, ArrowDownCircle, Crown, Rocket } from "lucide-react"
 
 export default function Home() {
+const router = useRouter()
  const coins = [
   {
     id: "btc",
