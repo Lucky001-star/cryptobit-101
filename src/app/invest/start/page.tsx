@@ -6,13 +6,18 @@ import { useState } from "react"
 import { supabase } from "@/lib/supabase"
 
 export default function InvestStartPage() {
-  const params = useSearchParams()
   const router = useRouter()
+const searchParams = useSearchParams()
 
-  const planName = params.get("name")
-  const roi = params.get("roi")
-  const days = params.get("days")
-
+const [planName, setPlanName] = useState("")
+const [roi, setRoi] = useState("")
+const [days, setDays] = useState("")
+useEffect(() => {
+  setPlanName(searchParams.get("name") || "")
+  setRoi(searchParams.get("roi") || "")
+  setDays(searchParams.get("days") || "")
+}, [searchParams])
+  
   const [amount, setAmount] = useState("")
   const [loading, setLoading] = useState(false)
 
