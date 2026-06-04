@@ -3,7 +3,16 @@
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
-
+import {
+  Wallet,
+  TrendingUp,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  BarChart3,
+  User,
+  Home,
+  History,
+} from "lucide-react"
 export default function Dashboard() {
   const router = useRouter()
   const [name, setName] = useState("")
@@ -81,11 +90,11 @@ useEffect(() => {
   return () => window.removeEventListener("focus", handleFocus)
 }, [])
   const navItems = [
-    { name: "Home", path: "/dashboard" },
-    { name: "Markets", path: "/markets" },
-    { name: "Invest", path: "/invest" },
-    { name: "History", path: "/history" },
-    { name: "Profile", path: "/profile" },
+    { name: "Home", path: "/dashboard", icon: Home },
+    { name: "Markets", path: "/markets", icon: BarChart3 },
+    { name: "Invest", path: "/invest", icon: TrendingUp},
+    { name: "History", path: "/history", icon: History },
+    { name: "Profile", path: "/profile", icon: User},
   ]
 
   useEffect(() => {
@@ -99,56 +108,93 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#050816] via-[#0b1437] to-[#050816] text-white pb-20">
 
-      {/* HEADER */}
-      <div className="flex justify-between items-center p-4">
-        <div>
-          <p className="text-gray-400 text-sm">Welcome back 👋</p>
-          <h1 className="text-xl font-bold">Hello {name}</h1>
-        </div>
+    {/* PREMIUM HEADER */}
+<div className="px-5 pt-6 flex justify-between items-center">
 
-        <div className="flex items-center gap-3">
+  <div>
+    <p className="text-gray-400 text-sm">
+      Welcome Back
+    </p>
 
-          <button
-            onClick={async () => {
-              await supabase.auth.signOut()
-              router.push("/login")
-            }}
-            className="text-sm bg-red-500 px-3 py-1 rounded-lg hover:bg-red-600"
-          >
-            Logout
-          </button>
+    <h1 className="text-2xl font-bold mt-1">
+      {name} 👋
+    </h1>
+  </div>
 
-          <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold">
-            CB
-          </div>
+  <div className="flex items-center gap-3">
 
-        </div>
+    <button
+      onClick={async () => {
+        await supabase.auth.signOut()
+        router.push("/login")
+      }}
+      className="bg-red-500/20 border border-red-500/30 text-red-400 px-4 py-2 rounded-xl"
+    >
+      Logout
+    </button>
+
+    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center font-bold">
+      CB
+     </div>
+    </div>
+    </div>
+  {/* PREMIUM WALLET CARD */}
+<div className="mx-4 mt-6">
+
+  <div className="rounded-3xl p-6 bg-gradient-to-r from-blue-600 to-cyan-500 shadow-2xl">
+
+    <p className="text-white/80 text-sm">
+      Total Portfolio Balance
+    </p>
+
+    <h2 className="text-4xl font-bold mt-2">
+      ${balance}
+    </h2>
+
+    <div className="flex justify-between mt-6">
+
+      <div>
+        <p className="text-white/70 text-xs">
+          Active Investments
+        </p>
+
+        <h3 className="font-bold">
+          {investments.length}
+        </h3>
       </div>
 
-      {/* BALANCE CARD */}
-      <div className="mx-4 mt-4 p-5 rounded-2xl bg-white/5 backdrop-blur-lg border border-white/10">
-        <p className="text-gray-400 text-sm">Total Balance</p>
-        <h2 className="text-2xl font-bold mt-1">
-  ${balance}
-</h2>
-        <p className="text-green-400 text-sm mt-1">+0.00% ROI</p>
+      <div>
+        <p className="text-white/70 text-xs">
+          Status
+        </p>
+
+        <h3 className="font-bold text-green-200">
+          Active
+        </h3>
+      </div>
+      </div>
+      </div>
       </div>
 
       {/* QUICK ACTIONS */}
       <div className="grid grid-cols-2 gap-4 mx-4 mt-6">
-        {["Deposit", "Withdraw"].map((item) => (
-          <div
-            key={item}
-            onClick={() => {
-              if (item === "Deposit") router.push("/deposit")
-              if (item === "Withdraw") router.push("/withdraw")
-            }}
-            className="p-4 rounded-xl bg-white/5 border border-white/10 text-center cursor-pointer hover:bg-white/10 transition"
-          >
-            {item}
-          </div>
-        ))}
-      </div>
+     <button
+    onClick={() => router.push("/deposit")}
+    className="bg-green-500/10 border border-green-500/30 rounded-2xl p-5"
+  >
+    <ArrowDownCircle size={28} className="mx-auto mb-2 text-green-400" />
+
+    <p>Deposit</p>
+    </button>
+    <button
+    onClick={() => router.push("/withdraw")}
+    className="bg-red-500/10 border border-red-500/30 rounded-2xl p-5"
+  >
+    <ArrowUpCircle size={28} className="mx-auto mb-2 text-red-400" />
+
+    <p>Withdraw</p>
+  </button>
+    </div>
 
       {/* INVESTMENTS */}
 <div className="mx-4 mt-6">
