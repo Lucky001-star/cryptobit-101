@@ -115,6 +115,7 @@ useEffect(() => {
 
   return () => window.removeEventListener("focus", handleFocus)
 }, [])
+
   const navItems = [
     { name: "Home", path: "/dashboard", icon: Home },
     { name: "Markets", path: "/markets", icon: BarChart3 },
@@ -167,40 +168,70 @@ useEffect(() => {
   {/* PREMIUM WALLET CARD */}
 <div className="mx-4 mt-6">
 
-  <div className="rounded-3xl p-6 bg-gradient-to-r from-blue-600 to-cyan-500 shadow-2xl">
+  <div className="grid grid-cols-2 gap-4">
 
-    <p className="text-white/80 text-sm">
-      Total Portfolio Balance
-    </p>
+    {/* TOTAL BALANCE */}
+    <div className="col-span-1 row-span-2 rounded-3xl p-5 bg-gradient-to-br from-blue-600 to-cyan-500 shadow-xl">
 
-    <h2 className="text-4xl font-bold mt-2">
-      ${balance}
-    </h2>
+      <p className="text-white/70 text-xs uppercase">
+        Total Balance
+      </p>
 
-    <div className="flex justify-between mt-6">
+      <h2 className="text-3xl font-bold mt-3">
+        ${balance.toLocaleString()}
+      </h2>
 
-      <div>
-        <p className="text-white/70 text-xs">
-          Active Investments
-        </p>
+    </div>
 
-        <h3 className="font-bold">
-          {investments.length}
-        </h3>
+    {/* INVESTED */}
+    <div className="rounded-3xl p-4 bg-white/5 border border-white/10">
+
+      <p className="text-gray-400 text-xs uppercase">
+        Invested
+      </p>
+
+      <h3 className="text-xl font-bold mt-2">
+        ${totalInvested.toLocaleString()}
+      </h3>
+
+    </div>
+
+    {/* PROFIT */}
+    <div className="rounded-3xl p-4 bg-white/5 border border-white/10">
+
+      <p className="text-gray-400 text-xs uppercase">
+        Profit
+      </p>
+
+      <h3 className="text-xl font-bold text-green-400 mt-2">
+        ${totalProfit.toLocaleString()}
+      </h3>
+
+    </div>
+
+    {/* ACTIVE ASSETS */}
+    <div className="col-span-2 rounded-3xl p-4 bg-white/5 border border-white/10">
+
+      <div className="flex justify-between items-center">
+
+        <div>
+          <p className="text-gray-400 text-xs uppercase">
+            Active Assets
+          </p>
+
+          <h3 className="text-2xl font-bold mt-2">
+            {activeAssets}
+          </h3>
+        </div>
+
+        <TrendingUp className="text-cyan-400" />
       </div>
 
-      <div>
-        <p className="text-white/70 text-xs">
-          Status
-        </p>
+    </div>
 
-        <h3 className="font-bold text-green-200">
-          Active
-        </h3>
-      </div>
-      </div>
-      </div>
-      </div>
+  </div>
+
+</div>/
   
   {/* STATS GRID */}
 
