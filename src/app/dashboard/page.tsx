@@ -13,11 +13,37 @@ import {
   Home,
   History,
 } from "lucide-react"
+import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+} from "recharts"
 export default function Dashboard() {
   const router = useRouter()
   const [name, setName] = useState("")
 const [balance, setBalance] = useState(0)
 const [investments, setInvestments] = useState<any[]>([])
+const totalInvested = investments.reduce(
+  (sum, inv) => sum + Number(inv.amount || 0),
+  0
+)
+
+const totalProfit = investments.reduce(
+  (sum, inv) =>
+    sum +
+    (Number(inv.expected_return || 0) -
+      Number(inv.amount || 0)),
+  0
+)
+
+const activeAssets = investments.length
+const chartData = [
+  { value: balance * 0.2 },
+  { value: balance * 0.4 },
+  { value: balance * 0.6 },
+  { value: balance * 0.8 },
+  { value: balance },
+]
 const checkUser = async () => {
   const { data } = await supabase.auth.getUser()
 
@@ -175,7 +201,84 @@ useEffect(() => {
       </div>
       </div>
       </div>
+  
+  {/* STATS GRID */}
 
+<div className="grid grid-cols-3 gap-3 mx-4 mt-4">
+
+  <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <p className="text-gray-400 text-xs">
+      Invested
+    </p>
+
+    <h3 className="font-bold text-lg mt-1">
+      ${totalInvested.toFixed(2)}
+    </h3>
+  </div>
+
+  <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <p className="text-gray-400 text-xs">
+      Profit
+    </p>
+
+    <h3 className="font-bold text-lg mt-1 text-green-400">
+      ${totalProfit.toFixed(2)}
+    </h3>
+  </div>
+
+  <div className="bg-white/5 border border-white/10 rounded-2xl p-4">
+    <p className="text-gray-400 text-xs">
+      Assets
+    </p>
+
+    <h3 className="font-bold text-lg mt-1 text-blue-400">
+      {activeAssets}
+    </h3>
+  </div>
+
+</div>
+{/* PORTFOLIO PERFORMANCE */}
+
+<div className="mx-4 mt-6">
+
+  <div className="bg-white/5 border border-white/10 rounded-3xl p-5">
+
+    <div className="flex justify-between items-center mb-4">
+
+      <div>
+        <h2 className="font-bold text-lg">
+          Portfolio Performance
+        </h2>
+
+        <p className="text-gray-400 text-sm">
+          Based on account balance
+        </p>
+      </div>
+
+      <TrendingUp className="text-green-400" />
+    </div>
+
+    <div className="h-44">
+
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={chartData}>
+
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#22c55e"
+            strokeWidth={3}
+            dot={false}
+          />
+
+        </LineChart>
+      </ResponsiveContainer>
+
+    </div>
+
+  </div>
+
+</div>
       {/* QUICK ACTIONS */}
       <div className="grid grid-cols-2 gap-4 mx-4 mt-6">
      <button
