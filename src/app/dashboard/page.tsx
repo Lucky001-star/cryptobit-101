@@ -23,6 +23,7 @@ export default function Dashboard() {
   const [name, setName] = useState("")
 const [balance, setBalance] = useState(0)
 const [investments, setInvestments] = useState<any[]>([])
+const [chartPeriod, setChartPeriod] = useState("7D")
 const totalInvested = investments.reduce(
   (sum, inv) => sum + Number(inv.amount || 0),
   0
@@ -285,11 +286,41 @@ useEffect(() => {
           Based on account balance
         </p>
       </div>
+       <div className="flex gap-2">
+
+    {["1D", "7D", "30D", "1Y"].map((period) => (
+      <button
+        key={period}
+        onClick={() => setChartPeriod(period)}
+        className={`px-3 py-1 rounded-lg text-xs transition ${
+          chartPeriod === period
+            ? "bg-blue-500 text-white"
+            : "bg-white/5 text-gray-400"
+        }`}
+      >
+        {period}
+      </button>
+    ))}
+
+  </div>
+
+</div>
 
       <TrendingUp className="text-green-400" />
     </div>
+     <div className="h-64">
+    
+   <div className="mb-3">
 
-    <div className="h-44">
+  <p className="text-gray-400 text-sm">
+    Current Portfolio Value
+  </p>
+
+  <h3 className="text-2xl font-bold">
+    ${balance.toLocaleString()}
+  </h3>
+
+</div>
 
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={chartData}>
@@ -306,10 +337,8 @@ useEffect(() => {
       </ResponsiveContainer>
 
     </div>
-
   </div>
 
-</div>
       {/* QUICK ACTIONS */}
       <div className="grid grid-cols-2 gap-4 mx-4 mt-6">
      <button
